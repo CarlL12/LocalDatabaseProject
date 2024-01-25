@@ -29,6 +29,7 @@ public class ContactInformationEntity
     {
         return new ContactInformationEntity
         {
+            ContactId = contact.PersonId,
             Email = contact.Email,
             PhoneNumber = contact.PhoneNumber,
         };

@@ -1,8 +1,6 @@
 ﻿using Infrastructure.Dtos;
 using Infrastructure.Entities;
 using Infrastructure.Repositories;
-using System.ComponentModel.Design;
-using System.Security.Cryptography;
 
 namespace Infrastructure.Services;
 
@@ -214,9 +212,6 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
                 list.Add(contact);
             };
 
-                
-
-
             return list;
         }
         else 
@@ -230,24 +225,33 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
     {
         var result = await _contactRepository.GetOneWithAllAsync(x => x.PersonId == personId);
 
-        var contact = new Contact
+        if(result != null)
         {
-            PersonId = result.PersonId,
-            FirstName = result.FirstName,
-            LastName = result.LastName,
-            Age = result.Age,
-            City = result.ContactAddress.City,
-            StreetName = result.ContactAddress.StreetName,
-            PostalCode = result.ContactAddress.PostalCode,
-            Email = result.ContactInformation.Email,
-            PhoneNumber = result.ContactInformation.PhoneNumber,
-            EducationName = result.Education.EducationName,
-            InstitutionName = result.Education.InstitutionName,
-            CompanyName = result.WorkPlace.CompanyName,
-            Title = result.WorkPlace.Title,
+            var contact = new Contact
+            {
+                PersonId = result.PersonId,
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                Age = result.Age,
+                City = result.ContactAddress.City,
+                StreetName = result.ContactAddress.StreetName,
+                PostalCode = result.ContactAddress.PostalCode,
+                Email = result.ContactInformation.Email,
+                PhoneNumber = result.ContactInformation.PhoneNumber,
+                EducationName = result.Education.EducationName,
+                InstitutionName = result.Education.InstitutionName,
+                CompanyName = result.WorkPlace.CompanyName,
+                Title = result.WorkPlace.Title,
 
-        };
-        return contact;
+            };
+            return contact;
+        }
+        else
+        { 
+            return null!; 
+        
+        }
+
     }
 
     public async Task<bool> UpdateContacts(Contact contact)
@@ -270,9 +274,16 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
             WorkPlaceId = workPlaceResult.Id
         };
 
+        var newInfo = new ContactInformationEntity
+        {
+            ContactId = contact.PersonId,
+            Email = contact.Email,
+            PhoneNumber =   contact.PhoneNumber
+        };
+
         var contactResult = await _contactRepository.UpdateAsync(x => x.PersonId == contact.PersonId, newContact);
 
-        var informationResult = await _informationRepository.UpdateAsync(x => x.ContactId == contact.PersonId, contact);
+        var informationResult = await _informationRepository.UpdateAsync(x => x.ContactId == contact.PersonId, newInfo);
 
         if (contactResult != null && informationResult != null)
         {

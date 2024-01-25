@@ -1,11 +1,13 @@
 ﻿
 using Infrastructure.Dtos;
+using Microsoft.EntityFrameworkCore.Update;
 
 namespace Infrastructure.Services;
 
-public  class MenuService(ContactService contactService)
+public  class MenuService(ContactService contactService, ProductMenuService productMenuService)
 {
     private readonly ContactService _contactService = contactService;
+    private readonly ProductMenuService _productMenuService = productMenuService;
 
    public async Task ShowMeny()
     {
@@ -25,6 +27,7 @@ public  class MenuService(ContactService contactService)
                         await ShowContactsMenu();
                         break;
                     case 2:
+                        await _productMenuService.ShowProductsMenu();
                         break;
                     case 3:
                         Environment.Exit(0);
@@ -39,9 +42,6 @@ public  class MenuService(ContactService contactService)
                 Console.WriteLine("Invalid input. Please enter a number.");
             }
         }
-
-
-
     }
 
     public async Task ShowContactsMenu()
@@ -69,8 +69,6 @@ public  class MenuService(ContactService contactService)
                         await UpdateOrDeleteContactMenu();
                         break;
                     case 4:
-                        break;
-                    case 5:
                         running = false;
                         break;
                     default:
@@ -85,9 +83,6 @@ public  class MenuService(ContactService contactService)
             }
 
         }
-
-           
-        
 
     }
 
@@ -137,94 +132,116 @@ public  class MenuService(ContactService contactService)
 
             var contact = await _contactService.GetOneAsync(Id);
 
-            Console.Clear();
-            Console.WriteLine($"{contact.PersonId}");
-            Console.WriteLine($"{contact.FirstName}");
-            Console.WriteLine($"{contact.LastName}");
-            Console.WriteLine($"{contact.Age}");
-            Console.WriteLine($"{contact.Email}");
-            Console.WriteLine($"{contact.PhoneNumber}");
-            Console.WriteLine($"{contact.StreetName}");
-            Console.WriteLine($"{contact.City}");
-            Console.WriteLine($"{contact.PostalCode}");
-            Console.WriteLine($"{contact.CompanyName}");
-            Console.WriteLine($"{contact.Title}");
-            Console.WriteLine($"{contact.InstitutionName}");
-            Console.WriteLine($"{contact.EducationName}");
-
-            Console.WriteLine("______________");
-
-            Console.WriteLine("1. Update");
-            Console.WriteLine("2. Delete");
-            Console.WriteLine("3. Exit");
-
-            if (int.TryParse(Console.ReadLine(), out int option))
+            if(contact != null)
             {
-                switch (option)
+                Console.Clear();
+                Console.WriteLine($"PersonId: {contact.PersonId}");
+                Console.WriteLine($"First name: {contact.FirstName}");
+                Console.WriteLine($"Last name: {contact.LastName}");
+                Console.WriteLine($"Age: {contact.Age}");
+                Console.WriteLine($"Street name: {contact.StreetName}");
+                Console.WriteLine($"Postal code: {contact.PostalCode}");
+                Console.WriteLine($"City: {contact.City}");
+                Console.WriteLine($"Email: {contact.Email}");
+                Console.WriteLine($"Education: {contact.EducationName}");
+                Console.WriteLine($"School name: {contact.InstitutionName}");
+                Console.WriteLine($"Company: {contact.CompanyName}");
+                Console.WriteLine($"Work title: {contact.Title}");
+
+                Console.WriteLine("______________");
+
+                Console.WriteLine("1. Update");
+                Console.WriteLine("2. Delete");
+                Console.WriteLine("3. Exit");
+
+                if (int.TryParse(Console.ReadLine(), out int option))
                 {
-                    case 1:
+                    switch (option)
+                    {
+                        case 1:
 
-                        Console.Clear();
-                        var newContact = new Contact {PersonId = contact.PersonId };
-
-                        Console.WriteLine("Update with new values");
-                        Console.Write("First name:");
-                        newContact.FirstName = Console.ReadLine()!;
-                        Console.Write("Last name:");
-                        newContact.LastName = Console.ReadLine()!;
-                        Console.Write("Age:");
-                        newContact.Age = int.Parse(Console.ReadLine()!);
-                        Console.Write("Email:");
-                        newContact.Email = Console.ReadLine()!;
-                        Console.Write("Phone number:");
-                        newContact.PhoneNumber = Console.ReadLine()!;
-                        Console.Write("Street name:");
-                        newContact.StreetName = Console.ReadLine()!;
-                        Console.Write("Postal code:");
-                        newContact.PostalCode = int.Parse(Console.ReadLine()!);
-                        Console.Write("City:");
-                        newContact.City = Console.ReadLine()!;
-                        Console.Write("Company name:");
-                        newContact.CompanyName = Console.ReadLine()!;
-                        Console.Write("Job title:");
-                        newContact.Title = Console.ReadLine()!;
-                        Console.Write("School name:");
-                        newContact.InstitutionName = Console.ReadLine()!;
-                        Console.Write("Education name:");
-                        newContact.EducationName = Console.ReadLine()!;
-
-                        await _contactService.UpdateContacts(newContact);
-
-                        Console.ReadKey();
-
-                        break;
-                    case 2:
-                        var result = await _contactService.DeleteContact(contact);
-
-                        if(result)
-                        {
                             Console.Clear();
-                            Console.WriteLine("Contact was deleted");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Could not delete contact");
-                        }
-                        break;
-                    case 3:
-                        running = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option. Please try again.");
-                        break;
+                            var newContact = new Contact { PersonId = contact.PersonId };
+
+                            Console.WriteLine("Update with new values");
+                            Console.Write("First name:");
+                            newContact.FirstName = Console.ReadLine()!;
+                            Console.Write("Last name:");
+                            newContact.LastName = Console.ReadLine()!;
+                            Console.Write("Age:");
+                            newContact.Age = int.Parse(Console.ReadLine()!);
+                            Console.Write("Email:");
+                            newContact.Email = Console.ReadLine()!;
+                            Console.Write("Phone number:");
+                            newContact.PhoneNumber = Console.ReadLine()!;
+                            Console.Write("Street name:");
+                            newContact.StreetName = Console.ReadLine()!;
+                            Console.Write("Postal code:");
+                            newContact.PostalCode = int.Parse(Console.ReadLine()!);
+                            Console.Write("City:");
+                            newContact.City = Console.ReadLine()!;
+                            Console.Write("Company name:");
+                            newContact.CompanyName = Console.ReadLine()!;
+                            Console.Write("Job title:");
+                            newContact.Title = Console.ReadLine()!;
+                            Console.Write("School name:");
+                            newContact.InstitutionName = Console.ReadLine()!;
+                            Console.Write("Education name:");
+                            newContact.EducationName = Console.ReadLine()!;
+
+                            var updateResult = await _contactService.UpdateContacts(newContact);
+
+                            if(updateResult)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Contact was updated");
+                                running = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Something went wrong");
+                            }
+                           
+
+                            break;
+                        case 2:
+                            var result = await _contactService.DeleteContact(contact);
+
+                            if (result)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Contact was deleted");
+                                running = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Could not delete contact");
+                            }
+                            break;
+                        case 3:
+                            running = false;
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option. Please try again.");
+                            break;
+                    }
                 }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a number.");
+                }
+                running = false;
+                Console.ReadKey();
             }
+            
             else
             {
-                Console.WriteLine("Invalid input. Please enter a number.");
+                Console.Clear();
+                Console.WriteLine("Could not find the contact you where searching for, please try again.");
+                Console.ReadKey();
             }
 
-            Console.ReadKey();
+       
         }
 
 

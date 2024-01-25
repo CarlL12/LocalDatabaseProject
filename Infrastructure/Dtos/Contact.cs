@@ -32,25 +32,5 @@ public  class Contact
 
     public string Title { get; set; } = null!;
 
-    //public static implicit operator Contact (ContactEntity contactEntity,ContactAddressEntity addressEntity, ContactInformationEntity informationEntity, EducationEntity educationEntity, WorkPlaceEntity workPlaceEntity)
-    //{
-    //    var contact = new Contact
-    //    {
-    //        PersonId = contactEntity.PersonId,
-    //        FirstName = contactEntity.FirstName,
-    //        LastName = contactEntity.LastName,
-    //        Age = contactEntity.Age,
-    //        StreetName = addressEntity.StreetName,
-    //        City = addressEntity.City,
-    //        PostalCode = addressEntity.PostalCode,
-    //        Email = informationEntity.Email,
-    //        PhoneNumber = informationEntity.PhoneNumber,
-    //        EducationName = educationEntity.EducationName,
-    //        InstitutionName = educationEntity.InstitutionName,
-    //        CompanyName = workPlaceEntity.CompanyName,
-    //        Title = workPlaceEntity.Title
-    //    };
 
-    //    return contact;
-    //}
 }
