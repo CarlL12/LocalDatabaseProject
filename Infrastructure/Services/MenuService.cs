@@ -91,7 +91,7 @@ public  class MenuService(ContactService contactService, ProductMenuService prod
             Console.Clear();
             int count = 1;
 
-            foreach (var contact in await _contactService.GetAllContacts())
+            foreach (var contact in await _contactService.GetAllContactsAsync())
             {
                 Console.WriteLine("_________________");
                 Console.WriteLine($"Contact {count} ");
@@ -189,7 +189,7 @@ public  class MenuService(ContactService contactService, ProductMenuService prod
                             Console.Write("Education name:");
                             newContact.EducationName = Console.ReadLine()!;
 
-                            var updateResult = await _contactService.UpdateContacts(newContact);
+                            var updateResult = await _contactService.UpdateContactsAsync(newContact);
 
                             if(updateResult)
                             {
@@ -205,7 +205,7 @@ public  class MenuService(ContactService contactService, ProductMenuService prod
 
                             break;
                         case 2:
-                            var result = await _contactService.DeleteContact(contact);
+                            var result = await _contactService.DeleteContactAsync(contact);
 
                             if (result)
                             {
@@ -257,7 +257,7 @@ public  class MenuService(ContactService contactService, ProductMenuService prod
             Console.Write("PersonId:");
             contact.PersonId = Console.ReadLine()!;
 
-            var result = await _contactService.ContactExistsPersonId(contact);
+            var result = await _contactService.ContactExistsPersonIdAsync(contact);
 
             if (!result)
             {

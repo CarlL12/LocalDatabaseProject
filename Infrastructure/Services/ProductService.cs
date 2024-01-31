@@ -235,7 +235,7 @@ public  class ProductService(CategoryRepository categoryRepository, ManufactureR
         }
     }
 
-    public async Task<bool> DeleteProduct(Product product)
+    public async Task<bool> DeleteProductAsync(Product product)
     {
 
         var priceResult = await _priceRepository.DeleteAsync(x => x.ProductId == product.ArticleNumber);

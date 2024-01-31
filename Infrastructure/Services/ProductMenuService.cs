@@ -197,7 +197,7 @@ public class ProductMenuService(ProductService productService)
 
                             break;
                         case 2:
-                            var result = await _productService.DeleteProduct(product);
+                            var result = await _productService.DeleteProductAsync(product);
 
                             if (result)
                             {

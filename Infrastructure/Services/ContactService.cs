@@ -182,7 +182,7 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
         return contactAddress;
     }
 
-    public async Task<IEnumerable<Contact>> GetAllContacts ()
+    public async Task<IEnumerable<Contact>> GetAllContactsAsync()
     {
         var list = new List<Contact>();
         var result = await _contactRepository.GetWithAllAsync();
@@ -254,7 +254,7 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
 
     }
 
-    public async Task<bool> UpdateContacts(Contact contact)
+    public async Task<bool> UpdateContactsAsync(Contact contact)
     {
 
         var workPlaceResult = await CreateWorkPlaceAsync(contact);
@@ -295,7 +295,7 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
         }
     }
 
-    public async Task<bool> ContactExistsPersonId(Contact contact)
+    public async Task<bool> ContactExistsPersonIdAsync(Contact contact)
     {
         var result = await _contactRepository.ExistsAsync(x => x.PersonId == contact.PersonId);
 
@@ -309,7 +309,7 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
         }
     }
     
-    public async Task<bool> DeleteContact(Contact contact)
+    public async Task<bool> DeleteContactAsync(Contact contact)
     {
         var contactResult = await _contactRepository.DeleteAsync(x => x.PersonId == contact.PersonId);
 
