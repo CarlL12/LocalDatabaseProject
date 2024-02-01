@@ -206,7 +206,7 @@ public class ProductService_Tests
         // Act
         await productService.CreateProductAsync(product);
 
-        var result = productService.GetAllProductsAsync();
+        var result = await productService.GetAllProductsAsync();
 
 
         //AssertS

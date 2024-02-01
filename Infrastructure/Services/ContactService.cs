@@ -187,7 +187,6 @@ public  class ContactService (ContactRepository contactRepository, ContactAddres
         var list = new List<Contact>();
         var result = await _contactRepository.GetWithAllAsync();
 
-        Console.Clear();
         if (result != null)
         {
             foreach (ContactEntity contactEntity in result)

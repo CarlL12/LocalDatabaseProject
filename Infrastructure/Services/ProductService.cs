@@ -140,7 +140,7 @@ public  class ProductService(CategoryRepository categoryRepository, ManufactureR
         var list = new List<Product>();
         var result = await _productRepository.GetWithAllAsync();
 
-        Console.Clear();
+
         if (result != null)
         {
             foreach (ProductEntity productEntity in result)
